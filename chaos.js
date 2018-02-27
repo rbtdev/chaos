@@ -14,8 +14,8 @@ function Chaos(canvasId) {
     this.ctx.fillStyle = "rgba(0,0,0,1)";
     this.ctx.clearRect(0,0,this.width, this.height);
     this.pointSize = 1;
-    this.height = this.canvas.height - this.pointSize;
-    this.width = this.canvas.width - this.pointSize;
+    this.height = this.canvas.height 
+    this.width = this.canvas.width 
     this.makeVerticies();
 }
 
