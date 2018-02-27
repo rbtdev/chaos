@@ -1,7 +1,8 @@
 function Chaos(canvasId) {
     this.times = parseInt(document.getElementById('times').value, 10);
     this.sides = parseInt(document.getElementById('sides').value, 10);
-    var r = parseFloat(document.getElementById('ratio').value);
+    this.rInput = document.getElementById('ratio')
+    var r = parseFloat(this.rInput.value);
     this.ratio = r?r:0.5;
 
     this.canvas = document.getElementById(canvasId);
@@ -53,6 +54,11 @@ Chaos.prototype.start = function () {
         this.plot(newPoint);
 
     }
+    setTimeout(function () {
+        _this.ratio += .001;
+        _this.rInput.value = _this.ratio;
+        _this.start();
+    }, 1000/50)
 }
 
 function Point(x, y) {
