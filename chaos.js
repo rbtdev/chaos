@@ -1,10 +1,13 @@
 function Chaos(canvasId) {
-    this.times = parseInt(document.getElementById('times').value, 10);
+    this.tInput = document.getElementById('times');
+    this.times = parseInt(this.tInput.value, 10) || 10000;
+    this.tInput.value = this.times;
     this.sInput = document.getElementById('sides');
-    this.sides = parseInt(this.sInput.value, 10);
+    this.sides = parseInt(this.sInput.value, 10) || 1 ;
+    this.sInput.value = this.sides;
     this.rInput = document.getElementById('ratio')
-    var r = parseFloat(this.rInput.value);
-    this.ratio = r?r:0.5;
+    this.ratio = parseFloat(this.rInput.value) || 0;
+    this.rInput.value = this.ratio;
 
     this.canvas = document.getElementById(canvasId);
     this.ctx = canvas.getContext("2d");
@@ -12,11 +15,11 @@ function Chaos(canvasId) {
     this.pointSize = 1;
     this.height = this.canvas.height - this.pointSize;
     this.width = this.canvas.width - this.pointSize;
-    this.verticies = [];
-    this.makeVerticies(this.points);
+    this.makeVerticies();
 }
 
 Chaos.prototype.makeVerticies = function (n) {
+    this.verticies = [];
     var radius = Math.min(this.width, this.height)/2;
     var angle = 2*Math.PI/this.sides;
     var rot = Math.PI/2;
@@ -61,6 +64,7 @@ Chaos.prototype.start = function () {
             _this.sides++;
             _this.sInput.value = _this.sides;
             _this.ratio = .001;
+            _this.makeVerticies();
         }
         _this.rInput.value = _this.ratio;
         _this.start();
