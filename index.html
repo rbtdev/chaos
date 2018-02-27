@@ -5,14 +5,14 @@
     <link rel='stylesheet' href='./chaos.css'>
 </head>
 
-<body>
+<body onload = 'init("canvas")'>
     <div id='content'>
         <canvas id='canvas' width='500' height='500'></canvas>
         <div>
             <input id='sides' placeholder="Number of sides">
             <input id='times' placeholder="Points to plot">
             <input id='ratio' placeholder="Ratio">
-            <button onclick='new Chaos("canvas", 1000000).start()'>Start</button>
+            <button id = 'start' onclick='chaos.start()'>Start</button>
         </div>
     </div>
 </body>
