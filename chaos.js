@@ -11,6 +11,7 @@ function Chaos(canvasId) {
 
     this.canvas = document.getElementById(canvasId);
     this.ctx = canvas.getContext("2d");
+    this.ctx.fillStyle = "rgba(0,0,0,1)";
     this.ctx.clearRect(0,0,this.width, this.height);
     this.pointSize = 1;
     this.height = this.canvas.height - this.pointSize;
@@ -34,7 +35,8 @@ Chaos.prototype.makeVerticies = function (n) {
 
 
 Chaos.prototype.plot = function (point) {
-    this.ctx.strokeRect(point.x, point.y, this.pointSize, this.pointSize);
+    this.ctx.fillRect( point.x, point.y, 1, 1 );
+
 }
 
 Chaos.prototype.start = function () {
