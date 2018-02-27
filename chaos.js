@@ -16,32 +16,29 @@ function Chaos(canvasId) {
     this.pointSize = 1;
     this.height = this.canvas.height 
     this.width = this.canvas.width 
+
     this.makeVerticies();
 }
 
-Chaos.prototype.makeVerticies = function (n) {
+Chaos.prototype.makeVerticies = function () {
     this.verticies = [];
-    var radius = Math.min(this.width, this.height)/2;
+    var radius = Math.min(this.width, this.height)/2 -0.5;
     var angle = 2*Math.PI/this.sides;
-    var rot = Math.PI/2;
+    var rot = -Math.PI/2;
     for (var point = 0; point < this.sides; point++) {
-        var x = radius*Math.cos(angle*point+rot);
-        var y = radius*Math.sin(angle*point+rot);
-        x = x + radius;
-        y = y + radius;
+        var x = radius*Math.cos(angle*point+rot) + radius;
+        var y = radius*Math.sin(angle*point+rot) + radius;
         this.verticies.push(new Point(x,y));
     }
 }
 
-
 Chaos.prototype.plot = function (point) {
     this.ctx.fillRect( point.x, point.y, 1, 1 );
-
 }
-
+ 
 Chaos.prototype.start = function () {
-    this.ctx.clearRect(0,0,this.width, this.height);
     var _this = this;
+    this.ctx.clearRect(0,0,this.width, this.height);
     this.verticies.forEach(function (vertex) {
         _this.plot(vertex);
     })
@@ -49,28 +46,27 @@ Chaos.prototype.start = function () {
         Math.random() * this.width,
         Math.random() * this.height
     );
-
     this.plot(newPoint);
-    var times = 0;
+
     for (var times = 0; times < this.times; times++) {
         var lastPoint = newPoint;
         var chaos = Math.floor(Math.random() * this.verticies.length);
         var vertex = this.verticies[chaos];
         var newPoint = lastPoint.midPoint(vertex, this.ratio);
         this.plot(newPoint);
-
     }
-    setTimeout(function () {
-        _this.ratio += .001;
+
+    requestAnimationFrame(function () {
+        _this.ratio += .0005;
         if (_this.ratio > 2.0) {
             _this.sides++;
             _this.sInput.value = _this.sides;
-            _this.ratio = .001;
+            _this.ratio = 0;
             _this.makeVerticies();
         }
-        _this.rInput.value = _this.ratio;
+        _this.rInput.value = _this.ratio.toFixed(4);
         _this.start();
-    }, 1000/50)
+    })
 }
 
 function Point(x, y) {
