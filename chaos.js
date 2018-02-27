@@ -1,6 +1,9 @@
 function Chaos(canvasId) {
     this.times = parseInt(document.getElementById('times').value, 10);
     this.sides = parseInt(document.getElementById('sides').value, 10);
+    var r = parseFloat(document.getElementById('ratio').value);
+    this.ratio = r?r:0.5;
+
     this.canvas = document.getElementById(canvasId);
     this.ctx = canvas.getContext("2d");
     this.ctx.clearRect(0,0,this.width, this.height);
@@ -46,7 +49,7 @@ Chaos.prototype.start = function () {
         var lastPoint = newPoint;
         var chaos = Math.floor(Math.random() * this.verticies.length);
         var vertex = this.verticies[chaos];
-        var newPoint = lastPoint.midPoint(vertex);
+        var newPoint = lastPoint.midPoint(vertex, this.ratio);
         this.plot(newPoint);
 
     }
@@ -57,9 +60,9 @@ function Point(x, y) {
     this.y = y;
 }
 
-Point.prototype.midPoint = function (point) {
-    var x = (point.x -this.x) / 2 + this.x;
-    var y = (point.y -this.y) / 2 + this.y;
+Point.prototype.midPoint = function (point, ratio) {
+    var x = (point.x -this.x)*ratio + this.x;
+    var y = (point.y -this.y)*ratio + this.y;
     return new Point(x, y);
 }
 
