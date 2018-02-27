@@ -1,6 +1,7 @@
 function Chaos(canvasId) {
     this.times = parseInt(document.getElementById('times').value, 10);
-    this.sides = parseInt(document.getElementById('sides').value, 10);
+    this.sInput = document.getElementById('sides');
+    this.sides = parseInt(this.sInput.value, 10);
     this.rInput = document.getElementById('ratio')
     var r = parseFloat(this.rInput.value);
     this.ratio = r?r:0.5;
@@ -56,6 +57,11 @@ Chaos.prototype.start = function () {
     }
     setTimeout(function () {
         _this.ratio += .001;
+        if (_this.ratio > 2.0) {
+            _this.sides++;
+            _this.sInput.value = _this.sides;
+            _this.ratio = .001;
+        }
         _this.rInput.value = _this.ratio;
         _this.start();
     }, 1000/50)
