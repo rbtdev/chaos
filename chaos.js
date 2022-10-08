@@ -1,4 +1,10 @@
-var chaos
+var chaos;
+
+const MIN_RATIO = 0.3;
+const RATIO_STEP = .005;
+const MAX_RATIO = 1.5;
+const MIN_SIDES = 3;
+const POINT_COUNT = 100000;
 
 function init(canvasId) {
     chaos = new Chaos(canvasId);
@@ -7,14 +13,18 @@ function init(canvasId) {
 function Chaos(canvasId) {
     this.tInput = document.getElementById('times');
     this.sInput = document.getElementById('sides');
-    this.rInput = document.getElementById('ratio')
+    this.rInput = document.getElementById('ratio');
     this.canvas = document.getElementById(canvasId);
+    this.height = document.body.scrollHeight - 50;
+    this.width = this.height;
+    this.canvas.height = this.height;
+    this.canvas.width = this.width;
+    this.canvas.style.width = `${this.width}px`;
+    this.canvas.style.height = `${this.height}px`;
     this.startButton = document.getElementById('start');
     this.ctx = canvas.getContext("2d");
     this.ctx.fillStyle = "rgba(0,0,0,1)";
     this.pointSize = 1;
-    this.height = this.canvas.height
-    this.width = this.canvas.width
 }
 
 Chaos.prototype.stop = function () {
@@ -27,6 +37,12 @@ Chaos.prototype.stop = function () {
 }
 
 Chaos.prototype.start = function () {
+    this.times = parseInt(this.tInput.value, 10) || POINT_COUNT;
+    this.tInput.value = this.times;
+    this.sides = parseInt(this.sInput.value, 10) || MIN_SIDES;
+    this.sInput.value = this.sides;
+    this.ratio = parseFloat(this.rInput.value) || MIN_RATIO;
+    this.rInput.value = this.ratio;
     this.run();
     this.tInput.disabled = true;
     this.rInput.disabled = true;
@@ -53,13 +69,6 @@ Chaos.prototype.plot = function (point) {
 
 Chaos.prototype.run = function () {
     var _this = this;
-
-    this.times = parseInt(this.tInput.value, 10) || 10000;
-    this.tInput.value = this.times;
-    this.sides = parseInt(this.sInput.value, 10) || 1;
-    this.sInput.value = this.sides;
-    this.ratio = parseFloat(this.rInput.value) || 0;
-    this.rInput.value = this.ratio;
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.makeVerticies();
     this.verticies.forEach(function (vertex) {
@@ -81,11 +90,11 @@ Chaos.prototype.run = function () {
     }
 
     this.req = requestAnimationFrame(function () {
-        _this.ratio += .0005;
-        if (_this.ratio > 2.0) {
+        _this.ratio += RATIO_STEP;
+        if (_this.ratio > MAX_RATIO) {
             _this.sides++;
             _this.sInput.value = _this.sides;
-            _this.ratio = 0;
+            _this.ratio = MIN_RATIO;
         }
         _this.rInput.value = _this.ratio.toFixed(4);
         _this.run();
